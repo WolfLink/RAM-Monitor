@@ -14,7 +14,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self.window setAspectRatio:CGSizeMake(1, 1)];
-    WindowController *mainWindowController = [[WindowController alloc] initWithWindow:self.window];
+    //WindowController *mainWindowController = [[WindowController alloc] initWithWindow:self.window];
 }
 
 @end

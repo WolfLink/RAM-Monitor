@@ -30,5 +30,7 @@
 {
     [super windowDidLoad];
 }
-
+-(void)setUpdateSpeed:(id)sender {
+    
+}
 @end

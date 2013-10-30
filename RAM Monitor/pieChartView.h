@@ -14,8 +14,6 @@
 #import <mach/task.h>
 
 @interface pieChartView : NSView {
-    CGPoint center;
-    float radius;
     NSTimer *tickTock;
     double wired;
     double active;
@@ -23,4 +21,6 @@
     double free;
 }
 -(void)startTick;
+
+
 @end

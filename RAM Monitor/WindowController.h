@@ -12,5 +12,5 @@
 @interface WindowController : NSWindowController {
     IBOutlet pieChartView *ChartView;
 }
-
+-(IBAction)setUpdateSpeed:(id)sender;
 @end

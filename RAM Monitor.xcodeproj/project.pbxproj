@@ -492,6 +492,7 @@
 				6EC9A35F181D967D00E7A94F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6EC9A360181D967D00E7A94F /* Build configuration list for PBXNativeTarget "RAM MonitorTests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +501,7 @@
 				6EC9A362181D967D00E7A94F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

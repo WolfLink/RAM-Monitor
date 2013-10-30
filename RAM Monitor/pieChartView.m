@@ -7,9 +7,13 @@
 //
 
 #import "pieChartView.h"
-#define PI 3.14159265358979323846264338
 
 @implementation pieChartView
+
+const CGRect frameRect = {{0.0f,0.0f},{512.0f,512.0f}};
+const CGPoint center = {256.0f,256.0f};
+const int radius = 170;
+
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -22,18 +26,30 @@
 -(void)awakeFromNib {
     [self startTick];
 }
+-(void)checkSettings {
+    FILE *file;
+    file = fopen("settings.txt","r");
+    if (file) {
+        
+    }
+    else {
+        NSLog(@"Writing default settings file...");
+        file = fopen("settings.txt", "w");
+        
+    }
+    fclose(file);
+}
 -(void)startTick {
+    //[self checkSettings];
     tickTock = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateDatas) userInfo:nil repeats:YES];
     [self updateDatas];
 }
 - (void)drawRect:(NSRect)dirtyRect
 {
 	[super drawRect:dirtyRect];
-    center = CGPointMake(dirtyRect.origin.x+dirtyRect.size.width/2, dirtyRect.origin.y+dirtyRect.size.height/2);
-    radius = dirtyRect.size.width/3;
     float lastAngle = 90;
     float nextAngle = 90-360*wired;
-    NSImage *image = [[NSImage alloc] initWithSize:NSSizeFromCGSize(dirtyRect.size)];
+    NSImage *image = [[NSImage alloc] initWithSize:NSSizeFromCGSize(frameRect.size)];
     [image lockFocus];
     NSBezierPath *path = [[NSBezierPath alloc] init];
     [path moveToPoint: center];
@@ -42,6 +58,7 @@
     [path closePath];
     
     [[NSColor colorWithRed:1 green:0 blue:0 alpha:1] set];
+    [path stroke];
     [path fill];
     
     path = [[NSBezierPath alloc] init];
@@ -53,6 +70,7 @@
     [path closePath];
     
     [[NSColor colorWithRed:1 green:1 blue:0 alpha:1] set];
+    [path stroke];
     [path fill];
     
     path = [[NSBezierPath alloc] init];
@@ -64,17 +82,24 @@
     [path closePath];
     
     [[NSColor colorWithRed:0 green:0 blue:1 alpha:1] set];
+    [path stroke];
     [path fill];
     
     path = [[NSBezierPath alloc] init];
     [path moveToPoint: center];
     lastAngle = nextAngle;
     nextAngle = lastAngle-360*free;
-    [path appendBezierPathWithArcWithCenter:center radius:radius startAngle:lastAngle endAngle:nextAngle clockwise:YES];
+    
+    //nextAngle should be -270.  If it isn't, there is some kind of error (probably a rounding error).  If it isn't small, it is problem.  I'm going to assume there is no problem and draw the arc to 90 to complete the full angle in case there is a rounding error big enough to make a difference.
+    if (nextAngle != -270) {
+        NSLog(@"Error factor: %f", nextAngle+270);
+    }
+    [path appendBezierPathWithArcWithCenter:center radius:radius startAngle:lastAngle endAngle:90 clockwise:YES];
     [path lineToPoint:center];
     [path closePath];
     
     [[NSColor colorWithRed:0 green:1 blue:0 alpha:1] set];
+    [path stroke];
     [path fill];
     
     [image unlockFocus];
@@ -108,10 +133,10 @@
     inactive = vmstat.inactive_count / total;
     free = vmstat.free_count / total;
     
-    float percentWired = wired*100;
+    /*float percentWired = wired*100;
     float percentActive = active*100;
     float percentInactive = inactive*100;
-    float percentFree = free*100;
+    float percentFree = free*100;*/
     //float shouldBe100 = percentActive+percentFree+percentInactive+percentWired;
     
     [self setNeedsDisplay:YES];
